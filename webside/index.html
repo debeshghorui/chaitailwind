@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChaiTailwind - Utility CSS Without Build Steps</title>
+    <meta name="description" content="ChaiTailwind is a lightweight utility-first CSS engine that scans chai-* classes and applies inline styles dynamically." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Archivo:wght@500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+    <div class="bg-blobs" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+    </div>
+
+    <header class="topbar reveal">
+        <div class="brand-wrap">
+            <span class="brand-mark" aria-hidden="true">CT</span>
+            <span class="brand-text">ChaiTailwind</span>
+        </div>
+        <nav>
+            <a href="#playground">Playground</a>
+            <a href="#utilities">Utilities</a>
+            <a href="#deploy">Deploy</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero reveal">
+            <p class="eyebrow">npm package</p>
+            <h1>Utility classes that run straight in the browser.</h1>
+            <p class="lead">
+                ChaiTailwind scans <strong>chai-*</strong> classes and applies CSS styles dynamically.
+                No compile step, no Tailwind config, no setup overhead.
+            </p>
+            <div class="cta-row">
+                <a class="btn btn-primary" href="https://www.npmjs.com/package/@debeshghorui/chaitailwind" target="_blank" rel="noreferrer">View on npm</a>
+                <a class="btn btn-ghost" href="https://github.com/debeshghorui/chaitailwind" target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+            <div class="install-card">
+                <p>Install</p>
+                <code>npm install @debeshghorui/chaitailwind</code>
+            </div>
+        </section>
+
+        <section class="stats reveal">
+            <article>
+                <p>Package</p>
+                <h2>@debeshghorui/chaitailwind</h2>
+            </article>
+            <article>
+                <p>Version</p>
+                <h2 id="pkg-version">0.1.0</h2>
+            </article>
+            <article>
+                <p>Use Case</p>
+                <h2>Fast Utility Prototypes</h2>
+            </article>
+        </section>
+
+        <section id="utilities" class="utilities reveal">
+            <div class="section-head">
+                <p class="eyebrow">supported utilities</p>
+                <h2>What you can use today</h2>
+            </div>
+            <div class="utility-grid" id="utility-grid"></div>
+        </section>
+
+        <section id="playground" class="playground reveal">
+            <div class="section-head">
+                <p class="eyebrow">live test</p>
+                <h2>Playground</h2>
+                <p>Type any chai classes and apply them to the preview box.</p>
+            </div>
+
+            <div class="play-wrap">
+                <label for="class-input">Class list</label>
+                <input id="class-input" type="text" value="chai-p-24 chai-bg-blue chai-text-white chai-rounded-16 chai-center" />
+
+                <div class="chip-row" id="chip-row"></div>
+
+                <button id="apply-btn" class="btn btn-primary" type="button">Apply Classes</button>
+
+                <div class="preview-shell">
+                    <div id="preview" class="preview-box">
+                        <h3>Preview Area</h3>
+                        <p>Try classes like chai-m-20 or chai-fs-22.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="deploy" class="deploy reveal">
+            <div class="section-head">
+                <p class="eyebrow">deployment</p>
+                <h2>Deploy this website</h2>
+            </div>
+            <ol>
+                <li>Upload the <strong>webside</strong> folder to any static host (Netlify, Vercel, GitHub Pages, Cloudflare Pages).</li>
+                <li>Set publish directory to <strong>webside</strong>.</li>
+                <li>Use build command <strong>none</strong> because this site is plain HTML/CSS/JS.</li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="reveal">
+        <p>Built for ChaiTailwind package demos and docs.</p>
+    </footer>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

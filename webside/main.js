@@ -38,9 +38,9 @@ const presetData = [
 
 const defaultPlaygroundClasses = presetData[0].classes;
 
-const CDN_SNIPPET = `<script type="module">
-    import { initChai } from "https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.js/+esm";
-    initChai();
+const CDN_SNIPPET = `<script src="https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.browser.js"></script>
+<script>
+    window.initchai();
 </script>`;
 
 function renderUtilityGrid() {
@@ -149,20 +149,30 @@ function renderPresets() {
 }
 
 async function loadInitChai() {
-    const moduleUrls = [
-        "https://esm.sh/@debeshghorui/chaitailwind@0.1.0?bundle",
-        "https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.js/+esm"
-    ];
+    const browserBundleUrl =
+        "https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.browser.js";
 
-    for (const url of moduleUrls) {
-        try {
-            const mod = await import(url);
-            if (typeof mod.initChai === "function") {
-                return mod.initChai;
-            }
-        } catch (error) {
-            console.warn(`Failed to load ${url}`, error);
+    const globalInit = window.initchai || window.initChai;
+    if (typeof globalInit === "function") {
+        return globalInit;
+    }
+
+    try {
+        await new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = browserBundleUrl;
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load ${browserBundleUrl}`));
+            document.head.appendChild(script);
+        });
+
+        const loadedInit = window.initchai || window.initChai;
+        if (typeof loadedInit === "function") {
+            return loadedInit;
         }
+    } catch (error) {
+        console.warn("Failed to load browser bundle", error);
     }
 
     return null;

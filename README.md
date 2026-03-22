@@ -24,12 +24,23 @@ import { initChai } from "@debeshghorui/chaitailwind";
 initChai();
 ```
 
+## CDN Usage (Global)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.browser.js"></script>
+<script>
+  window.initchai();
+  // Alias also available:
+  // window.initChai();
+</script>
+```
+
 For local demo usage in this repository:
 
 ```html
 <script type="module">
-	import { initChai } from "../src/index.js";
-	initChai();
+  import { initChai } from "../src/index.js";
+  initChai();
 </script>
 ```
 

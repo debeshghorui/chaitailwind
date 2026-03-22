@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChaiTailwind - Utility CSS Without Build Steps</title>
+    <title>Chai Tailwind</title>
     <meta name="description" content="ChaiTailwind is a lightweight utility-first CSS engine that scans chai-* classes and applies inline styles dynamically." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,19 +17,31 @@
         <span class="blob blob-3"></span>
     </div>
 
-    <header class="topbar reveal">
+    <header class="topbar reveal" id="site-topbar">
         <div class="brand-wrap">
             <span class="brand-mark" aria-hidden="true">CT</span>
             <span class="brand-text">ChaiTailwind</span>
         </div>
-        <nav>
-            <a href="#playground">Playground</a>
-            <a href="#utilities">Utilities</a>
+        <button
+            id="nav-toggle"
+            class="nav-toggle"
+            type="button"
+            aria-label="Toggle navigation"
+            aria-controls="primary-nav"
+            aria-expanded="false"
+        >
+            Menu
+        </button>
+        <nav id="primary-nav" class="primary-nav">
+            <a class="nav-link" href="#home">Home</a>
+            <a class="nav-link" href="#cdn-setup">Setup</a>
+            <a class="nav-link" href="#utilities">Utilities</a>
+            <a class="nav-link" href="#playground">Playground</a>
         </nav>
     </header>
 
     <main>
-        <section class="hero reveal">
+        <section id="home" class="hero reveal">
             <p class="eyebrow">npm package</p>
             <h1>Utility classes that run straight in the browser.</h1>
             <p class="lead">
@@ -61,6 +73,18 @@
             </article>
         </section>
 
+        <section class="deploy reveal" id="cdn-setup">
+            <div class="section-head">
+                <p class="eyebrow">copy paste setup</p>
+                <h2>CDN Script Tag</h2>
+                <p>Drop this snippet into your HTML and use chai-* classes instantly.</p>
+            </div>
+            <div class="code-wrap">
+                <pre><code id="cdn-code"></code></pre>
+                <button id="copy-cdn-btn" class="btn btn-ghost" type="button">Copy Script</button>
+            </div>
+        </section>
+
         <section id="utilities" class="utilities reveal">
             <div class="section-head">
                 <p class="eyebrow">supported utilities</p>
@@ -73,16 +97,33 @@
             <div class="section-head">
                 <p class="eyebrow">live test</p>
                 <h2>Playground</h2>
-                <p>Type any chai classes and apply them to the preview box.</p>
+                <p>Mix utility classes, toggle quick chips, and preview the result instantly.</p>
             </div>
 
-            <div class="play-wrap">
-                <label for="class-input">Class list</label>
-                <input id="class-input" type="text" value="chai-p-24 chai-bg-blue chai-text-white chai-rounded-16 chai-center" />
+            <div class="playground-grid">
+                <div class="play-wrap">
+                    <label for="class-input">Class list</label>
+                    <input id="class-input" type="text" value="chai-p-24 chai-bg-blue chai-text-white chai-rounded-16 chai-center" />
+                    <p class="play-note">Tip: use Enter to apply manually, or keep Auto Apply on.</p>
 
-                <div class="chip-row" id="chip-row"></div>
+                    <div class="chip-row" id="chip-row"></div>
 
-                <button id="apply-btn" class="btn btn-primary" type="button">Apply Classes</button>
+                    <div class="preset-row" id="preset-row"></div>
+
+                    <div class="play-actions">
+                        <button id="apply-btn" class="btn btn-primary" type="button">Apply Classes</button>
+                        <button id="reset-btn" class="btn btn-ghost" type="button">Reset</button>
+                        <label class="auto-toggle" for="auto-apply">
+                            <input id="auto-apply" type="checkbox" checked />
+                            Auto Apply
+                        </label>
+                    </div>
+
+                    <div class="class-meta">
+                        <p><span id="class-count">0</span> classes active</p>
+                        <code id="active-classes">-</code>
+                    </div>
+                </div>
 
                 <div class="preview-shell">
                     <div id="preview" class="preview-box">
@@ -94,8 +135,38 @@
         </section>
     </main>
 
-    <footer class="reveal">
-        <p>Built for ChaiTailwind package demos and docs.</p>
+    <footer class="site-footer reveal" id="site-footer">
+        <div class="site-footer-inner">
+            <div class="footer-grid">
+                <section class="footer-block footer-brand">
+                    <div class="brand-wrap">
+                        <span class="brand-mark" aria-hidden="true">CT</span>
+                        <span class="brand-text">ChaiTailwind</span>
+                    </div>
+                    <p class="footer-lead">A lightweight utility CSS engine for rapid browser-first prototypes.</p>
+                </section>
+
+                <section class="footer-block">
+                    <h3>Quick Links</h3>
+                    <a href="#home">Home</a>
+                    <a href="#cdn-setup">Setup</a>
+                    <a href="#utilities">Utilities</a>
+                    <a href="#playground">Playground</a>
+                </section>
+
+                <section class="footer-block">
+                    <h3>Package</h3>
+                    <a href="https://www.npmjs.com/package/@debeshghorui/chaitailwind" target="_blank" rel="noreferrer">npm Package</a>
+                    <a href="https://github.com/debeshghorui/chaitailwind" target="_blank" rel="noreferrer">GitHub Repo</a>
+                    <a href="https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.js/+esm" target="_blank" rel="noreferrer">CDN ESM</a>
+                </section>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="footer-year">2026</span> ChaiTailwind. Built for demos and docs.</p>
+                <a href="#home" class="back-top">Back to top</a>
+            </div>
+        </div>
     </footer>
 
     <script type="module" src="./main.js"></script>

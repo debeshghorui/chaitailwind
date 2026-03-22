@@ -4,6 +4,7 @@ import { extractChaiClasses, parseChaiClass } from "./parser.js";
 
 function applyClassStyles(element) {
     const chaiClasses = extractChaiClasses(element.classList);
+    const appliedClasses = [];
 
     chaiClasses.forEach((className) => {
         const parsed = parseChaiClass(className);
@@ -17,7 +18,10 @@ function applyClassStyles(element) {
         }
 
         applyStyles(element, styleMap);
+        appliedClasses.push(className);
     });
+
+    appliedClasses.forEach((cls) => element.classList.remove(cls));
 }
 
 export function scanDOM(root = document) {

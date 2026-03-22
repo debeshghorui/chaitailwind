@@ -38,7 +38,7 @@ const presetData = [
 
 const defaultPlaygroundClasses = presetData[0].classes;
 
-const CDN_SNIPPET = `<script src="https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.browser.js"></script>
+const CDN_SNIPPET = `<script src="https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.1/dist/index.browser.js"></script>
 <script>
     window.initchai();
 </script>`;
@@ -149,30 +149,35 @@ function renderPresets() {
 }
 
 async function loadInitChai() {
-    const browserBundleUrl =
-        "https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.0/dist/index.browser.js";
+    const localBundleUrl = "../dist/index.browser.js";
+    const cdnBundleUrl =
+        "https://cdn.jsdelivr.net/npm/@debeshghorui/chaitailwind@0.1.1/dist/index.browser.js";
 
     const globalInit = window.initchai || window.initChai;
     if (typeof globalInit === "function") {
         return globalInit;
     }
 
-    try {
-        await new Promise((resolve, reject) => {
-            const script = document.createElement("script");
-            script.src = browserBundleUrl;
-            script.async = true;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Failed to load ${browserBundleUrl}`));
-            document.head.appendChild(script);
-        });
+    const urls = [localBundleUrl, cdnBundleUrl];
 
-        const loadedInit = window.initchai || window.initChai;
-        if (typeof loadedInit === "function") {
-            return loadedInit;
+    for (const url of urls) {
+        try {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement("script");
+                script.src = url;
+                script.async = true;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`Failed to load ${url}`));
+                document.head.appendChild(script);
+            });
+
+            const loadedInit = window.initchai || window.initChai;
+            if (typeof loadedInit === "function") {
+                return loadedInit;
+            }
+        } catch (error) {
+            console.warn(`Failed to load bundle from ${url}`, error);
         }
-    } catch (error) {
-        console.warn("Failed to load browser bundle", error);
     }
 
     return null;
@@ -363,6 +368,7 @@ async function initPage() {
 
     const initChai = await loadInitChai();
     if (initChai) {
+        setVersion("0.1.1");
         wirePlayground(initChai);
     } else {
         setVersion("load failed");

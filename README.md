@@ -48,19 +48,6 @@ For local demo usage in this repository:
 - Percent shortcut is supported with pct suffix: chai-m-50pct -> margin: 50%
 - Colors support common tokens (red, blue, gray-100, etc.) and hex formats (#fff, #ffffff, hex-ffffff)
 
-## Scripts
-
-- npm test: runs unit and integration tests with Vitest + jsdom
-- npm run build: bundles src/index.js to dist/index.js using esbuild
-- npm run prepublishOnly: runs test + build before publish
-
-## Publish Checklist
-
-1. Create and verify your npm account at npmjs.com.
-2. Run npm login.
-3. Run npm test && npm run build.
-4. Publish with npm publish --access public.
-
 ## License
 
 MIT

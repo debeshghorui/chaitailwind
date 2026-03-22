@@ -1,38 +1,125 @@
 const utilityData = [
-    { name: "Spacing", sample: "chai-p-12 chai-m-16" },
-    { name: "Background", sample: "chai-bg-blue" },
-    { name: "Text Color", sample: "chai-text-white" },
-    { name: "Font Size", sample: "chai-fs-20" },
-    { name: "Center Text", sample: "chai-center" },
-    { name: "Border", sample: "chai-border-2" },
-    { name: "Rounded", sample: "chai-rounded-16" },
-    { name: "Layout", sample: "chai-flex chai-justify-center chai-items-center" }
+    {
+        name: "Padding",
+        category: "Spacing",
+        sample: "chai-p-24",
+        output: "padding: 24px"
+    },
+    {
+        name: "Margin",
+        category: "Spacing",
+        sample: "chai-m-16",
+        output: "margin: 16px"
+    },
+    {
+        name: "Background",
+        category: "Colors",
+        sample: "chai-bg-blue",
+        output: "background-color: #3b82f6"
+    },
+    {
+        name: "Text Color",
+        category: "Colors",
+        sample: "chai-text-white",
+        output: "color: #ffffff"
+    },
+    {
+        name: "Font Size",
+        category: "Typography",
+        sample: "chai-fs-20",
+        output: "font-size: 20px"
+    },
+    {
+        name: "Center Text",
+        category: "Typography",
+        sample: "chai-center",
+        output: "text-align: center"
+    },
+    {
+        name: "Border",
+        category: "Border",
+        sample: "chai-border-2",
+        output: "border: 2px solid #000000"
+    },
+    {
+        name: "Rounded",
+        category: "Border",
+        sample: "chai-rounded-16",
+        output: "border-radius: 16px"
+    },
+    {
+        name: "Flex",
+        category: "Layout",
+        sample: "chai-flex",
+        output: "display: flex"
+    },
+    {
+        name: "Justify Center",
+        category: "Layout",
+        sample: "chai-justify-center",
+        output: "justify-content: center"
+    },
+    {
+        name: "Align Center",
+        category: "Layout",
+        sample: "chai-items-center",
+        output: "align-items: center"
+    },
+    {
+        name: "Border Color",
+        category: "Border",
+        sample: "chai-border-red",
+        output: "border: 1px solid #ef4444"
+    }
 ];
 
 const quickChips = [
     "chai-p-24",
+    "chai-p-12",
     "chai-m-12",
     "chai-bg-red",
     "chai-bg-blue",
+    "chai-bg-green",
+    "chai-bg-yellow",
     "chai-text-white",
+    "chai-text-black",
+    "chai-fs-18",
     "chai-fs-24",
+    "chai-fs-32",
     "chai-border-2",
+    "chai-border-red",
+    "chai-rounded-8",
     "chai-rounded-24",
-    "chai-center"
+    "chai-center",
+    "chai-flex",
+    "chai-justify-center",
+    "chai-items-center"
 ];
 
 const presetData = [
     {
-        name: "Card",
+        name: "🎴 Card",
         classes: "chai-p-24 chai-bg-blue chai-text-white chai-rounded-16 chai-center"
     },
     {
-        name: "Badge",
-        classes: "chai-p-12 chai-bg-red chai-text-white chai-rounded-24 chai-fs-20 chai-center"
+        name: "🏷️ Badge",
+        classes: "chai-p-12 chai-bg-red chai-text-white chai-rounded-24 chai-fs-18 chai-center"
     },
     {
-        name: "Clean",
+        name: "📦 Bordered",
         classes: "chai-p-20 chai-border-2 chai-rounded-16 chai-center"
+    },
+    {
+        name: "🌿 Success",
+        classes: "chai-p-16 chai-bg-green chai-text-white chai-rounded-8 chai-center chai-fs-18"
+    },
+    {
+        name: "⚠️ Warning",
+        classes: "chai-p-16 chai-bg-yellow chai-text-black chai-rounded-8 chai-center chai-fs-18"
+    },
+    {
+        name: "🏗️ Flex Layout",
+        classes: "chai-flex chai-justify-center chai-items-center chai-p-24 chai-bg-blue chai-rounded-16"
     }
 ];
 
@@ -52,7 +139,12 @@ function renderUtilityGrid() {
     const cards = utilityData
         .map(
             (item) =>
-                `<article class="utility-card"><p>${item.name}</p><h3>${item.sample.split(" ")[0]}</h3><code>${item.sample}</code></article>`
+                `<article class="utility-card">
+                    <p class="card-category">${item.category}</p>
+                    <h3>${item.name}</h3>
+                    <code>${item.sample}</code>
+                    <span class="card-arrow">→ <span>${item.output}</span></span>
+                </article>`
         )
         .join("");
 
@@ -67,7 +159,7 @@ function renderChips() {
     }
 
     row.innerHTML = quickChips
-        .map((chip) => `<button class="chip" type="button" data-chip="${chip}">${chip}</button>`)
+        .map((chip) => `<button class="chip" type="button" data-chip="${chip}">${chip.replace("chai-", "")}</button>`)
         .join("");
 
     const getTokens = () =>
@@ -283,7 +375,10 @@ function wirePlayground(initChai) {
     const autoApply = document.getElementById("auto-apply");
     const classCount = document.getElementById("class-count");
     const activeClasses = document.getElementById("active-classes");
+    const stylesOutput = document.getElementById("styles-output");
     const preview = document.getElementById("preview");
+    const copyClassesBtn = document.getElementById("copy-classes-btn");
+    const copyStylesBtn = document.getElementById("copy-styles-btn");
 
     if (!input || !button || !resetButton || !autoApply || !classCount || !activeClasses || !preview || !initChai) {
         return;
@@ -297,6 +392,26 @@ function wirePlayground(initChai) {
         activeClasses.textContent = classes || "-";
     };
 
+    const updateGeneratedStyles = () => {
+        if (!stylesOutput) {
+            return;
+        }
+        const cssText = preview.style.cssText;
+        if (!cssText) {
+            stylesOutput.textContent = "— no styles yet —";
+            return;
+        }
+
+        const formatted = cssText
+            .split(";")
+            .map((s) => s.trim())
+            .filter(Boolean)
+            .map((s) => `${s};`)
+            .join("\n");
+
+        stylesOutput.textContent = formatted;
+    };
+
     const apply = () => {
         preview.className = "preview-box";
         preview.removeAttribute("style");
@@ -306,11 +421,13 @@ function wirePlayground(initChai) {
         }
         updateMeta(classes);
         initChai();
+        updateGeneratedStyles();
     };
 
     button.addEventListener("click", apply);
     resetButton.addEventListener("click", () => {
         input.value = defaultPlaygroundClasses;
+        input.dispatchEvent(new Event("input", { bubbles: true }));
         apply();
     });
 
@@ -329,6 +446,41 @@ function wirePlayground(initChai) {
         }
     });
 
+    // Copy buttons
+    const flashCopy = (btn, original) => {
+        if (!btn) return;
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = "✓";
+        btn.style.color = "#74f2cd";
+        setTimeout(() => {
+            btn.innerHTML = origHTML;
+            btn.style.color = "";
+        }, 1200);
+    };
+
+    if (copyClassesBtn) {
+        copyClassesBtn.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(getClassString());
+                flashCopy(copyClassesBtn);
+            } catch (e) {
+                console.warn("Copy failed", e);
+            }
+        });
+    }
+
+    if (copyStylesBtn) {
+        copyStylesBtn.addEventListener("click", async () => {
+            try {
+                const text = stylesOutput ? stylesOutput.textContent : "";
+                await navigator.clipboard.writeText(text);
+                flashCopy(copyStylesBtn);
+            } catch (e) {
+                console.warn("Copy failed", e);
+            }
+        });
+    }
+
     apply();
 }
 
@@ -344,16 +496,13 @@ function wireSnippetCopy() {
     copyBtn.addEventListener("click", async () => {
         try {
             await navigator.clipboard.writeText(CDN_SNIPPET);
-            copyBtn.textContent = "Copied";
+            const origHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Copied!`;
             window.setTimeout(() => {
-                copyBtn.textContent = "Copy Script";
+                copyBtn.innerHTML = origHTML;
             }, 1400);
         } catch (error) {
             console.warn("Clipboard copy failed", error);
-            copyBtn.textContent = "Copy failed";
-            window.setTimeout(() => {
-                copyBtn.textContent = "Copy Script";
-            }, 1600);
         }
     });
 }
